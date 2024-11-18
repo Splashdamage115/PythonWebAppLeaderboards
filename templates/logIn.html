@@ -1,0 +1,17 @@
+{% extends "base.html"%}
+
+{% block the_body %}
+
+
+<img src="/static/cards/logIn.png" class="logInCard">
+<div id="LogInBox">
+    <form action="/LogIn" method="post">
+        <label for="accountHandle">Username<br></label>
+        <input type="text" id="accountHandle" name="accountHandle" required autofocus>
+        <p class="WarningText">{{ warningText }}</p><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <br><br><br>
+    <a href="/createAccount"><button id="createAccountButton"> Create New Account</button></a>
+</div>
+{% endblock %}

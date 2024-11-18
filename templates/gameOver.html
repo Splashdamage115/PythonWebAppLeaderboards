@@ -1,0 +1,34 @@
+{% extends "base.html"%}
+
+{% block the_body %}
+
+<h id="endGameText">{{ title }}</h>
+
+
+<div id="playerPairStackGO">
+    <h class="playerName">Player</h>
+    <h id="playerPairAmtGO">  Pairs<br>{{(playerPair / 2)|round|int}}</h>
+    {% for t in range(playerPair) %}
+    <img src="/static/cards/back.png" class="playerPairCard" style="transform: translateY(-{{(t - 1) / 2}}px);">
+    {% endfor %}
+</div>
+
+<div id="computerPairStackGO">
+    <h class="computerName">Computer</h>
+    <h id="computerPairAmtGO">  Pairs<br>{{(computerPair / 2)|round|int}}</h>
+    {% for t in range(computerPair) %}
+    <img src="/static/cards/back.png" class="computerPairCard" style="transform: translateY(-{{(t - 1) / 2}}px);">
+    {% endfor %}
+</div>
+
+<div>
+    <ol>
+        {% for i in range(scoreAmt) %}
+        <li>{{ playerNames[i] }} with a score {{ playerScores[i] }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+    <a href="/startgame"><h id="playAgain">Play Again</h></a>
+
+{% endblock %}

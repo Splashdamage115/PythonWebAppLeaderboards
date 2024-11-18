@@ -1,0 +1,599 @@
+body {
+    font-family: Verdana, Geneva, Arial, sans-serif;
+    background-color: rgb(2, 122, 0);
+    margin: 10%;
+    text-align: center;
+  /* We do this after the colour as a fallback */
+    background-image: url("./TileableCheckerboard.png");
+    background-size: 64px;
+    background-repeat: repeat;
+  }
+   
+  h2 {
+    font-size: 150%;
+  }
+
+#LogInBox{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+#createAccountBox{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.logInCard{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index:-1;
+}
+
+.WarningText{
+  color: red;
+  font-style: italic;
+  font-size: 50%;
+}
+
+input{
+  text-align: center;
+  width: 32em;
+  background-color: whitesmoke;
+  color:black;
+  border-radius: 10px;
+  border-color: black;
+  border-width: 1px;
+}
+
+@keyframes highlightBorder
+{
+  0%
+  {
+    border-width: 1px;
+    box-shadow: inset gray 0px 0px 0px 0px; 
+
+  }
+  30%{
+    border-width: 1px;
+  }
+  100%
+  {
+    border-width: 1px;
+    box-shadow: inset rgb(179, 179, 179) 2px 2px 6px 2px; 
+  }
+}
+
+#createAccountButton {
+  text-align: center;
+  background-color: whitesmoke;
+  color:black;
+  border-radius: 10px;
+  border-color: black;
+  border-width: 1px;
+  padding-left: 2em;
+  padding-right: 2em;
+  font-weight: bold;
+}
+
+#createAccountButton:hover{
+  animation-name: highlightBorder;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+  cursor:pointer;
+}
+
+input:hover{
+  animation-name: highlightBorder;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+  cursor:text;
+}
+   
+  input[type=submit] {
+    width: 8em;
+    color: black;
+    background-color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+   
+  a {
+    text-decoration: none;
+    font-weight: bold;
+  }
+   
+  a:hover {
+    text-decoration: underline;
+  }
+
+#player{
+  position: fixed;
+  bottom:10%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+#computer{
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+#playerCards{
+  display: flex;
+
+  padding: 16px;
+  background-image: url("./PlayerBack.png");
+  background-size: 32px;
+  background-repeat: repeat;
+}
+
+#playerCards .cardImg:hover{
+  transform: translateY(-3px);
+}
+
+#playerCards .cardImg {
+  position: static;
+}
+
+
+@keyframes swipeIn {
+  from {
+    transform: translate(0%, 0%);
+  }
+  to {
+    transform: translate(0%, -170%);
+  }
+}
+
+#playerCard .requestCard{
+  display:none;
+  position:absolute;
+  top: inherit;
+  left: inherit;
+  background-color: rgb(35, 71, 0);
+  color: azure;
+
+  padding: 20px;
+  border-radius: 10px;
+}
+
+#playerCard:hover .requestCard {
+  display: block;
+
+  animation-name: swipeIn;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+}
+
+#playerCard .giveCard{
+  display:none;
+  position:absolute;
+  top: inherit;
+  left: inherit;
+  background-color: rgb(35, 71, 0);
+  color: azure;
+
+  padding: 20px;
+  padding-left: 37px;
+  padding-right: 37px;
+  border-radius: 10px;
+}
+
+#playerCard:hover .giveCard {
+  display: block;
+
+  animation-name: swipeIn;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+}
+
+#playerPairAmt{
+  position: fixed;
+  top: 70%;
+  right: 15%;
+  font-size: 200%;
+  z-index: 1;
+  transform: translate(120%, 50%);
+  color:transparent;
+  text-shadow: transparent;
+  cursor:default;
+}
+
+#playerPairAmtGO{
+  position: fixed;
+  top: 53%;
+  left: 16%;
+  font-size: 200%;
+  z-index: 1;
+  
+  color:azure;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  cursor:default;
+}
+
+#computerPairAmtGO{
+  position: fixed;
+  top: 53%;
+  left: 76%;
+  font-size: 200%;
+  z-index: 1;
+  
+  color:azure;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  cursor:default;
+}
+
+#computerPairAmt{
+  position: fixed;
+  top: 20%;
+  right: 15%;
+  font-size: 200%;
+  z-index: 1;
+  transform: translate(120%, 50%);
+  color:transparent;
+  text-shadow: transparent;
+  cursor:default;
+}
+
+#deckAmt{
+  position: fixed;
+  top: 50%;
+  left: 4%;
+  font-size: 200%;
+  z-index: 1;
+  transform: translate(120%, 50%);
+  color:transparent;
+  text-shadow: transparent;
+  cursor:default;
+}
+
+
+#deckStack #goFishButton{
+  display:none;
+  position:absolute;
+  top: inherit;
+  left: inherit;
+  background-color: rgb(35, 71, 0);
+  color: azure;
+
+  padding: 10px;
+  padding-right: 27px;
+  padding-left: 27px;
+  border-radius: 10px;
+}
+
+#deckStack:hover #goFishButton {
+  display: block;
+
+  animation-name: swipeIn;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+}
+
+
+@keyframes fadeIn {
+  from {
+    color:transparent;
+    text-shadow: transparent;
+  }
+  to {
+    color:azure;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    color: azure;
+    text-shadow: -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000, 3px 3px 0 #000;
+  }
+  to {
+    color: transparent;
+    text-shadow: transparent;
+  }
+}
+
+
+#playerPairStack:hover #playerPairAmt{
+  animation-name: fadeIn;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+}
+
+#playerPairStack #playerPairAmt {
+  animation-name: fadeOut;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+#computerPairStack:hover #computerPairAmt{
+  animation-name: fadeIn;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+}
+
+#computerPairStack #computerPairAmt {
+  animation-name: fadeOut;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+#deckStack:hover #deckAmt{
+  animation-name: fadeIn;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+}
+
+#deckStack #deckAmt {
+  animation-name: fadeOut;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+
+
+
+#deckStack{
+  position: fixed;
+  top: 50%;
+  left: 5%;
+}
+
+.deckCard{
+  position:fixed;
+  height: 16vh;
+  max-height: 160px;
+}
+
+#playerPairStack{
+  position: fixed;
+  top: 70%;
+  right: 15%;
+  z-index: 0;
+}
+
+#playerPairStackGO{
+  position: fixed;
+  top: 50%;
+  left: 15%;
+  z-index: 0;
+}
+
+.playerPairCard{
+  position:fixed;
+  height: 16vh;
+  max-height: 160px;
+  z-index: 0;
+}
+
+#computerPairStack{
+  position: fixed;
+  top: 20%;
+  right: 15%;
+  z-index: 0;
+}
+
+#computerPairStackGO{
+  position: fixed;
+  top: 50%;
+  right: 25%;
+  z-index: 0;
+}
+
+.computerPairCard{
+  position:fixed;
+  height: 16vh;
+  max-height: 160px;
+  z-index: 0;
+}
+
+@keyframes swipeDown {
+  from {
+    transform: translate(0%, 0%);
+    opacity:0;
+  }
+  to {
+    transform: translate(0%, 120%);
+    opacity:1.0;
+  }
+}
+
+.Restart{
+  position:absolute;
+  top: 0%;
+  left:0%;
+}
+
+.Restart #restartText{
+  display:none;
+  position:absolute;
+  top: inherit;
+  left: inherit;
+  background-color: rgb(35, 71, 0);
+  color: azure;
+
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.Restart:hover #restartText {
+  display: block;
+
+  animation-name: swipeDown;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+}
+
+
+#computerCards{
+  display: flex;
+
+  padding: 16px;
+  background-image: url("./PlayerBack.png");
+  background-size: 32px;
+  background-repeat: repeat;
+}
+
+.cardImg{
+  height: 16vh;
+  max-height: 160px;
+}
+
+.playerName{
+  position: fixed;
+  top: 44%;
+  left: 14%;
+  font-size: 250%;
+  z-index: 1;
+  color: azure;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  cursor:default;
+}
+
+.computerName{
+  position: fixed;
+  top: 44%;
+  left: 74%;
+  font-size: 250%;
+  z-index: 1;
+  color: azure;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  cursor:default;
+}
+
+#endGameText
+{
+  color: azure;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  font-size: 500%;
+}
+
+#playAgain
+{
+  color: azure;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  font-size: 500%;
+  position: fixed;
+  left:50%;
+  top:80%;
+  transform:translate(-50%,-50%);
+  background-color: rgb(35, 71, 0);
+  padding: 40px;
+  border-radius: 10px;
+}
+
+@keyframes highlightRestart {
+  0% {
+    box-shadow: inset 0px 0px 0px 0px rgb(2, 122, 0);
+    transform:translate(-50%,-50%);
+  }
+
+  75% {
+    box-shadow: inset 9px 9px 25px 25px rgb(2, 122, 0);
+    transform:translate(-50%,-52%);
+  }
+
+  100% {
+    box-shadow: inset 10px 10px 30px 30px rgb(2, 122, 0);
+    transform:translate(-50%,-53%);
+  }
+}
+
+#playAgain:hover{
+  animation-name: highlightRestart;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+}
+  
+
+.resolve
+{
+  position:fixed;
+  left: 50%;
+  top: 50%;
+  transform:translate(-50%,-50%);
+  height: 16vh;
+  max-height: 160px;
+}
+
+@keyframes disolve {
+  0% {
+    opacity: 1.0;
+  }
+  50%{
+    opacity:1.0;
+  }
+
+  100% {
+    opacity: 0.0;
+  }
+}
+
+#disolveCard
+{
+  height: 16vh;
+  max-height: 160px;
+
+  animation-name: disolve;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes moveDown {
+  0% {
+    transform:translateY(0%);
+  }
+  50%{
+    transform:translateY(0%);
+    opacity: 1.0;
+  }
+
+  99% {
+    transform:translateY(400%);
+    opacity: 0.0;
+  }
+  100%{
+    transform:translateY(-400%);
+    opacity:0.0;
+  }
+}
+
+@keyframes moveUp {
+  0% {
+    transform:translateY(0%);
+  }
+  50%{
+    transform:translateY(0%);
+    opacity: 1.0;
+  }
+
+  100% {
+    transform:translateY(-400%);
+    opacity: 0.0;
+  }
+}
+
+#animateCard
+{
+  height: 16vh;
+  max-height: 160px;
+
+  animation-name: moveDown;
+  animation-duration: 4s;
+  animation-fill-mode: forwards;
+}
+
+#animateCardUp
+{
+  height: 16vh;
+  max-height: 160px;
+
+  animation-name: moveUp;
+  animation-duration: 4s;
+  animation-fill-mode: forwards;
+}

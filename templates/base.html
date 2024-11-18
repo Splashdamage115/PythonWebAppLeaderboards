@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+    <link rel="stylesheet" href="/static/webapp.css">
+    <head>
+        <title> {{ title }} </title>
+    </head>
+    <body>
+         
+    <!--<p>
+        <ul>
+            {% for message in get_flashed_messages() %}
+            
+                <li>{{ message }}</li>
+
+            {% endfor %}
+        </ul>
+    </p>
+    !-->
+        {% block the_body %}
+        {% endblock %}
+
+        <div class="Restart"><h id="restartText">Restart</h>
+        <a href="/" class="Restart"><img src="/static/restartButton.png" style="max-width: 64px;"></a>
+    </div>
+    </body>
+</html>
