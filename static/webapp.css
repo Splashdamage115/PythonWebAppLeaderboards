@@ -13,6 +13,37 @@ body {
     font-size: 150%;
   }
 
+#highScoresTable{
+  position:fixed;
+  top: 50%;
+  left:90%;
+  max-width: 30%;
+
+  transform:translate(-50%,-50%);
+}
+#highScoresTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#highScoresTable td, #highScoresTable th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#highScoresTable tr{
+  background-color: #000000;
+  color: white;
+}
+
+#highScoresTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: rgb(255, 0, 0);
+  color: white;
+}
+
 #LogInBox{
   position: fixed;
   left: 50%;
@@ -31,6 +62,15 @@ body {
   top: 50%;
   transform: translate(-50%, -50%);
   z-index:-1;
+}
+
+.highScoreCard{
+  position: absolute;
+  left: 80%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index:-1;
+
 }
 
 .WarningText{
@@ -219,7 +259,7 @@ input:hover{
 #computerPairAmtGO{
   position: fixed;
   top: 53%;
-  left: 76%;
+  left: 36%;
   font-size: 200%;
   z-index: 1;
   
@@ -381,7 +421,7 @@ input:hover{
 #computerPairStackGO{
   position: fixed;
   top: 50%;
-  right: 25%;
+  left: 35%;
   z-index: 0;
 }
 
@@ -458,7 +498,7 @@ input:hover{
 .computerName{
   position: fixed;
   top: 44%;
-  left: 74%;
+  left: 34%;
   font-size: 250%;
   z-index: 1;
   color: azure;

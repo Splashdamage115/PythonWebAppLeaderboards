@@ -36,6 +36,7 @@ def checkPlayerGoFish():
 
 @app.get("/startgame")
 def start():
+    session["score"] = 100
     resetGame()
     card_images = [card.lower().replace(" ", "_") + ".png" for card in session["player"]]
 
@@ -147,6 +148,9 @@ def creatAccount():
 
 @app.get("/select/<value>")
 def processCardSelection(value):
+    if session["score"] > 0:
+        session["score"] -=1
+
     found_it = False
     drawn = "none.png"
     drawType = "none.png"
@@ -172,7 +176,17 @@ def processCardSelection(value):
     session["player_pairs"].extend(pairs)
 
     if len(session["player"]) == 0 or len(session["computer"]) == 0 or len(session["deck"]) == 0:
-         return redirect("/gameOver")
+        ## submit your score here!
+        sql = f"insert into scores (player_id, score) values (?, ?)"
+        print(session["id"])
+        newID = session["id"]
+        newScore = session["score"]
+        score = (newID, newScore)
+
+        with DBcm.UseDatabase(creds) as db:
+            db.execute(sql, score)
+
+        return redirect("/gameOver")
 
     drawn = drawn.lower().replace(" ", "_") + ".png"
     card_images = [card.lower().replace(" ", "_") + ".png" for card in session["player"]]
@@ -244,6 +258,16 @@ def processCardHandOver(value):
     session["computer_pairs"].extend(pairs)
 
     if len(session["player"]) == 0 or len(session["computer"]) == 0 or len(session["deck"]) == 0:
+        ## submit your score here!
+        sql = f"insert into scores (player_id, score) values (?, ?)"
+        print(session["id"])
+        newID = session["id"]
+        newScore = session["score"]
+        score = (newID, newScore)
+
+        with DBcm.UseDatabase(creds) as db:
+            db.execute(sql, score)
+    
         return redirect("/gameOver")
 
     card_images = [card.lower().replace(" ", "_") + ".png" for card in session["player"]]
@@ -266,20 +290,7 @@ def processCardHandOver(value):
 
 @app.get("/gameOver")
 def gameOver():
-    ## calculate the score here
-    session["score"] = len(session["player_pairs"]) / 2
-    ## submit your score here!
-    sql = f"insert into scores (player_id, score) values (?, ?)"
-    print(session["id"])
-    newID = session["id"]
-    newScore = session["score"]
-    score = (newID, newScore)
-
-    with DBcm.UseDatabase(creds) as db:
-        db.execute(sql, score)
-
-
-    sql = "select p.handle, s.score, s.time from player as p, scores as s where p.id = s.player_id order by s.score DESC limit 10"
+    sql = "select p.handle, s.score, s.time from player as p, scores as s where p.id = s.player_id order by s.score DESC limit 5"
     with DBcm.UseDatabase(creds) as db:
         db.execute(sql)
         session["names"] = db.fetchall()
