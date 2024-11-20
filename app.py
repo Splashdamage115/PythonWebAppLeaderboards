@@ -37,6 +37,7 @@ def checkPlayerGoFish():
 @app.get("/startgame")
 def start():
     session["score"] = 100
+    session["COMPUTERscore"] = 100
     resetGame()
     card_images = [card.lower().replace(" ", "_") + ".png" for card in session["player"]]
 
@@ -94,7 +95,7 @@ def logInAttempt():
         session["playerName"] = db.fetchall()
     
     # empty set, no name found!
-    if len(session["playerName"]) == 0:
+    if len(session["playerName"]) == 0 or session["playerName"][0][0] == 1:
         return render_template(
             "logIn.html",
             title = "Account doesnt exist!",
@@ -177,14 +178,24 @@ def processCardSelection(value):
 
     if len(session["player"]) == 0 or len(session["computer"]) == 0 or len(session["deck"]) == 0:
         ## submit your score here!
-        sql = f"insert into scores (player_id, score) values (?, ?)"
-        print(session["id"])
-        newID = session["id"]
-        newScore = session["score"]
-        score = (newID, newScore)
+        if len(session["player_pairs"]) > len(session["computer_pairs"]):
+            sql = f"insert into scores (player_id, score) values (?, ?)"
+            newID = session["id"]
+            newScore = session["score"]
+            score = (newID, newScore)
 
-        with DBcm.UseDatabase(creds) as db:
-            db.execute(sql, score)
+            with DBcm.UseDatabase(creds) as db:
+                db.execute(sql, score)
+        elif len(session["player_pairs"]) < len(session["computer_pairs"]):
+            sql = f"insert into scores (player_id, score) values (?, ?)"
+            newID = 1
+            newScore = session["COMPUTERscore"]
+            score = (newID, newScore)
+
+            with DBcm.UseDatabase(creds) as db:
+                db.execute(sql, score)
+
+        
 
         return redirect("/gameOver")
 
@@ -240,6 +251,9 @@ def liarPage():
 
 @app.get("/pick/<value>")
 def processCardHandOver(value):
+    if session["COMPUTERscore"] > 0:
+        session["COMPUTERscore"] -= 1
+
     face = "back.png"
     if value == "0":
         session["computer"].append(session["deck"].pop())
@@ -259,14 +273,22 @@ def processCardHandOver(value):
 
     if len(session["player"]) == 0 or len(session["computer"]) == 0 or len(session["deck"]) == 0:
         ## submit your score here!
-        sql = f"insert into scores (player_id, score) values (?, ?)"
-        print(session["id"])
-        newID = session["id"]
-        newScore = session["score"]
-        score = (newID, newScore)
+        if len(session["player_pairs"]) > len(session["computer_pairs"]):
+            sql = f"insert into scores (player_id, score) values (?, ?)"
+            newID = session["id"]
+            newScore = session["score"]
+            score = (newID, newScore)
 
-        with DBcm.UseDatabase(creds) as db:
-            db.execute(sql, score)
+            with DBcm.UseDatabase(creds) as db:
+                db.execute(sql, score)
+        elif len(session["player_pairs"]) < len(session["computer_pairs"]):
+            sql = f"insert into scores (player_id, score) values (?, ?)"
+            newID = 1
+            newScore = session["COMPUTERscore"]
+            score = (newID, newScore)
+
+            with DBcm.UseDatabase(creds) as db:
+                db.execute(sql, score)
     
         return redirect("/gameOver")
 

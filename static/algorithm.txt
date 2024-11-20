@@ -1,0 +1,4 @@
+all players start with 100 points
+every turn played 1 point is removed
+winner has points submitted to highscore table
+player with most points is at top of leaderboard (fastest game winner is at top)
