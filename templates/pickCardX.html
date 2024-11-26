@@ -1,6 +1,8 @@
-{% extends "base.html"%}
+
 
 {% block the_body %}
+
+<!--Pick card X-->
 
 <div id="computer">
     <div id="computerCards">
@@ -41,24 +43,14 @@
     {% for card in cards %}
         <div id="playerCard">
         <p class="giveCard">Give</p>
-        <a href="\pick\{{ card[: card.find('_')] }}"><img src="/static/cards/{{ card }}" class="cardImg"></a>
+        <a hx-post="\pick\{{ card[: card.find('_')] }}" hx-target="#gameBody" hx-trigger="click" hx-swap="innerHTML"><img src="/static/cards/{{ card }}" class="cardImg"></a>
     </div>
     {% endfor %}
     </div>
 </div>
 
-    <div class="resolve">
-        <img src="/static/cards/{{ resolveCard }}" class="cardImg">
-    </div>
-    
-    <div class="resolve">
-        <img src="/static/cards/{{ animateCard }}" id="animateCardDown">
-    </div>
-    
-    <div class="resolve">
-        <img src="/static/cards/{{ disolveCard }}" id="disolveCard">
-    </div>
-
+{% block resolveCards %}
+{% endblock %}
 
 
 {% endblock %}

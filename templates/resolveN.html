@@ -1,0 +1,17 @@
+{% extends 'game.html'%}
+{% block resolveCards %}
+
+<div id="resolveCards">
+    <div id="resolveStatic">
+        <img src="/static/cards/{{ resolveCard }}" class="cardImg">
+    </div>
+
+    <div id="animateCard">
+        <img src="/static/cards/{{ animateCard }}" id="animateCardUp">
+    </div>
+
+    <div id="disolveCardAnim">
+        <img src="/static/cards/{{ disolveCard }}" id="disolveCard">
+    </div>
+</div>
+{% endblock %}

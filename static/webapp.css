@@ -551,7 +551,25 @@ input:hover{
 }
   
 
-.resolve
+#resolveStatic
+{
+  position:fixed;
+  left: 50%;
+  top: 50%;
+  transform:translate(-50%,-50%);
+  height: 16vh;
+  max-height: 160px;
+}
+#animateCard
+{
+  position:fixed;
+  left: 50%;
+  top: 50%;
+  transform:translate(-50%,-50%);
+  height: 16vh;
+  max-height: 160px;
+}
+#disolveCard
 {
   position:fixed;
   left: 50%;
@@ -618,7 +636,7 @@ input:hover{
   }
 }
 
-#animateCard
+#animateCardDown
 {
   height: 16vh;
   max-height: 160px;

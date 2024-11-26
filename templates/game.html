@@ -2,25 +2,24 @@
 
 {% block the_body %}
 
+
 <div id="computer">
     <div id="computerCards">
         {% for _ in range(n_computer) %}
 
-            <img src="/static/cards/back.png" class="cardImg">
+            <img src="/static/cards/back.png"class="cardImg">
 
         {% endfor %}
     </div>
+        <br><br>
 </div>
 
-<a href="\pick\0">
-    <div id="deckStack">
-        <h id="deckAmt">{{deck}}</h>
-        <h id="goFishButton">GoFish</h>
-        {% for t in range(deck) %}
-        <img src="/static/cards/back.png" class="deckCard" style="transform: translateY(-{{t}}px);">
-        {% endfor %}
-    </div>
-</a>
+<div id="deckStack">
+    <h id="deckAmt">{{deck}}</h>
+    {% for t in range(deck) %}
+    <img src="/static/cards/back.png" class="deckCard" style="transform: translateY(-{{t}}px);">
+    {% endfor %}
+</div>
 
 <div id="playerPairStack">
     <h id="playerPairAmt">  Pairs<br>{{(playerPair / 2)|round|int}}</h>
@@ -36,28 +35,21 @@
     {% endfor %}
 </div>
 
+
+
 <div id="player">
     <div id="playerCards">
     {% for card in cards %}
         <div id="playerCard">
-        <p class="giveCard">Give</p>
-        <a href="\pick\{{ card[: card.find('_')] }}"><img src="/static/cards/{{ card }}" class="cardImg"></a>
-    </div>
+        <p class="requestCard">Request</p>
+        <a hx-post="\select\{{ card[: card.find('_')] }}" hx-target="#gameBody" hx-trigger="click" hx-swap="innerHTML"><img src="/static/cards/{{ card }}" class="cardImg"></a>
+        </div>
     {% endfor %}
     </div>
 </div>
 
-    <div class="resolve">
-        <img src="/static/cards/{{ resolveCard }}" class="cardImg">
-    </div>
-    
-    <div class="resolve">
-        <img src="/static/cards/{{ animateCard }}" id="animateCardDown">
-    </div>
-    
-    <div class="resolve">
-        <img src="/static/cards/{{ disolveCard }}" id="disolveCard">
-    </div>
+{% block resolveCards %}
+{% endblock %}
 
 
 

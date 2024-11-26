@@ -41,18 +41,26 @@ def start():
     resetGame()
     card_images = [card.lower().replace(" ", "_") + ".png" for card in session["player"]]
 
-    return render_template(
-        "startgame.html",
+    
+    content1 = render_template(
+        'resolveN.html',
         title = f"Welcome back {session["playerName"][0][1]}",
         cards = card_images, # available in the template as {{  cards  }}
         n_computer = len(session["computer"]), # available in the template as {{  n_computer  }}
         deck = len(session["deck"]),
         playerPair = len(session["player_pairs"]),
         computerPair = len(session["computer_pairs"]),
-        resolveCard = "GreetingCard.png",
-        animateCard = "none.png",
-        disolveCard = "welcomCard.png"
+
+        resolveCard = 'GreetingCard.png',
+        animateCard = 'none.png',
+        disolveCard = 'welcomCard.png'
     )
+
+
+
+
+    return content1
+        
 
 @app.get("/highScores")
 def HighScorePage():
@@ -110,6 +118,89 @@ def logInAttempt():
         session["highestScore"] = db.fetchall()
     
     return start()
+
+
+
+@app.post("/select/<value>")
+def selectCard(value):
+    if session["score"] > 0:
+        session["score"] -=1
+
+    found_it = False
+    drawn = "none.png"
+    drawType = "none.png"
+    for n, card in enumerate(session["computer"]):
+        if card.startswith(value):
+            found_it = n
+            break
+
+    if isinstance(found_it, bool):
+        # go fish code
+        flash("\nGo Fish\n")
+        session["player"].append(session["deck"].pop())
+        flash(f"You drew a {session["player"][-1]}")
+        drawType = "goFishCard.png"
+    else:
+        # swap code
+        flash(f"Here is your card: {session["computer"][n]}.")
+        session["player"].append(session["computer"].pop(n))
+
+    drawn = session["player"][-1]
+
+    session["player"], pairs = cards.identify_remove_pairs(session["player"])
+    session["player_pairs"].extend(pairs)
+
+    if len(session["player"]) == 0 or len(session["computer"]) == 0 or len(session["deck"]) == 0:
+        ## submit your score here!
+        if len(session["player_pairs"]) > len(session["computer_pairs"]):
+            sql = f"insert into scores (player_id, score) values (?, ?)"
+            newID = session["id"]
+            newScore = session["score"]
+            score = (newID, newScore)
+
+            with DBcm.UseDatabase(creds) as db:
+                db.execute(sql, score)
+        elif len(session["player_pairs"]) < len(session["computer_pairs"]):
+            sql = f"insert into scores (player_id, score) values (?, ?)"
+            newID = 1
+            newScore = session["COMPUTERscore"]
+            score = (newID, newScore)
+
+            with DBcm.UseDatabase(creds) as db:
+                db.execute(sql, score)
+
+        
+
+        return redirect("/gameOver")
+
+    drawn = drawn.lower().replace(" ", "_") + ".png"
+    card_images = [card.lower().replace(" ", "_") + ".png" for card in session["player"]]
+
+    
+    card = random.choice(session["computer"])
+    session["computerRequest"] = card
+    the_value = card[: card.find(" ")]
+    chosen = the_value.lower() + "_request.png"
+    
+    return render_template(
+        'resolvePick.html',
+
+        title = f"Welcome back {session["playerName"][0][1]}",
+        cards = card_images, # available in the template as {{  cards  }}
+        n_computer = len(session["computer"]), # available in the template as {{  n_computer  }}
+        deck = len(session["deck"]),
+        playerPair = len(session["player_pairs"]),
+        computerPair = len(session["computer_pairs"]),
+
+        resolveCard = chosen,
+        animateCard = drawn,
+        disolveCard = drawType
+    )
+
+
+
+
+
 
 @app.post("/newAccount")
 def tryMakeAccount():
@@ -208,8 +299,7 @@ def processCardSelection(value):
     the_value = card[: card.find(" ")]
     chosen = the_value.lower() + "_request.png"
     
-
-    return render_template(
+    out = render_template(
         "pickCard.html",
         title = "The Computer wants to Know",
         value = the_value,
@@ -222,6 +312,8 @@ def processCardSelection(value):
         animateCard = drawn,
         disolveCard = drawType
     )
+
+    return out
 
 @app.get("/liarPage")
 def liarPage():
@@ -249,7 +341,7 @@ def liarPage():
         disolveCard = drawType
     )
 
-@app.get("/pick/<value>")
+@app.post("/pick/<value>")
 def processCardHandOver(value):
     if session["COMPUTERscore"] > 0:
         session["COMPUTERscore"] -= 1
@@ -293,11 +385,9 @@ def processCardHandOver(value):
         return redirect("/gameOver")
 
     card_images = [card.lower().replace(" ", "_") + ".png" for card in session["player"]]
-
-
     
     return render_template(
-        "startgame.html",
+        "resolveN.html",
         title = "Keep Playing!",
         cards = card_images, # available in the template as {{  cards  }}
         n_computer = len(session["computer"]), # available in the template as {{  n_computer  }}
@@ -312,7 +402,7 @@ def processCardHandOver(value):
 
 @app.get("/gameOver")
 def gameOver():
-    sql = "select p.handle, s.score, s.time from player as p, scores as s where p.id = s.player_id order by s.score DESC limit 5"
+    sql = "select p.handle, s.score, s.time from player as p, scores as s where p.id = s.player_id order by s.score DESC limit 10"
     with DBcm.UseDatabase(creds) as db:
         db.execute(sql)
         session["names"] = db.fetchall()
