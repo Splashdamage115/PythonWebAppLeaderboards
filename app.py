@@ -50,7 +50,7 @@ def start():
     resetGame()
     card_images = [card.lower().replace(" ", "_") + ".png" for card in session['player']]
 
-    
+
     content1 = render_template(
         'resolveN.html',
         title = f"Welcome back {session['playerName'][0][1]}",
@@ -69,7 +69,7 @@ def start():
 
 
     return content1
-        
+
 
 @app.get("/highScores")
 def HighScorePage():
@@ -110,7 +110,7 @@ def logInAttempt():
     with DBcm.UseDatabase(creds) as db:
         db.execute(sql)
         session['playerName'] = db.fetchall()
-    
+
     # empty set, no name found!
     if len(session['playerName']) == 0 or session['playerName'][0][0] == 1:
         return render_template(
@@ -125,7 +125,7 @@ def logInAttempt():
     with DBcm.UseDatabase(creds) as db:
         db.execute(sql)
         session['highestScore'] = db.fetchall()
-    
+
     return start()
 
 
@@ -162,7 +162,7 @@ def selectCard(value):
     if len(session['player']) == 0 or len(session['computer']) == 0 or len(session['deck']) == 0:
         ## submit your score here!
         if len(session['player_pairs']) > len(session['computer_pairs']):
-            sql = f"insert into scores (player_id, score) values (%S, %S)"
+            sql = f"insert into scores (player_id, score) values (%s, %s)"
             newID = session['id']
             newScore = session['score']
             score = (newID, newScore)
@@ -170,7 +170,7 @@ def selectCard(value):
             with DBcm.UseDatabase(creds) as db:
                 db.execute(sql, score)
         elif len(session['player_pairs']) < len(session['computer_pairs']):
-            sql = f"insert into scores (player_id, score) values (%S, %S)"
+            sql = f"insert into scores (player_id, score) values (%s, %s)"
             newID = 1
             newScore = session['COMPUTERscore']
             score = (newID, newScore)
@@ -178,22 +178,22 @@ def selectCard(value):
             with DBcm.UseDatabase(creds) as db:
                 db.execute(sql, score)
 
-        
+
 
         return redirect("/gameOver")
 
     drawn = drawn.lower().replace(" ", "_") + ".png"
     card_images = [card.lower().replace(" ", "_") + ".png" for card in session['player']]
 
-    
+
     card = random.choice(session['computer'])
     session['computerRequest'] = card
     the_value = card[: card.find(" ")]
     chosen = the_value.lower() + "_request.png"
-    
+
     return render_template(
         'resolvePick.html',
- 
+
         title = f"Welcome back {session['playerName'][0][1]}",
         cards = card_images, # available in the template as {{  cards  }}
         n_computer = len(session['computer']), # available in the template as {{  n_computer  }}
@@ -222,14 +222,14 @@ def tryMakeAccount():
 
     # server returns no accounts with that name
     if len(session['playerName']) == 0:
-        sql = f"insert into player (name, handle) values (%S, %S)"
+        sql = f"insert into player (name, handle) values (%s, %s)"
         newName = data['accountName']
         newHandle = data['accountHandle']
         newUser = (newName, newHandle)
 
         with DBcm.UseDatabase(creds) as db:
             db.execute(sql, newUser)
-            
+
         return logInPage()
     else:
         return render_template(
@@ -237,7 +237,7 @@ def tryMakeAccount():
             title = "Name already exists!",
             warningText = "User already Exists!"
         )
-        
+
 
 @app.get("/createAccount")
 def creatAccount():
@@ -279,7 +279,7 @@ def processCardSelection(value):
     if len(session['player']) == 0 or len(session['computer']) == 0 or len(session['deck']) == 0:
         ## submit your score here!
         if len(session['player_pairs']) > len(session['computer_pairs']):
-            sql = f"insert into scores (player_id, score) values (%S, %S)"
+            sql = f"insert into scores (player_id, score) values (%s, %s)"
             newID = session['id']
             newScore = session['score']
             score = (newID, newScore)
@@ -287,7 +287,7 @@ def processCardSelection(value):
             with DBcm.UseDatabase(creds) as db:
                 db.execute(sql, score)
         elif len(session['player_pairs']) < len(session['computer_pairs']):
-            sql = f"insert into scores (player_id, score) values (%S, %S)"
+            sql = f"insert into scores (player_id, score) values (%s, %s)"
             newID = 1
             newScore = session['COMPUTERscore']
             score = (newID, newScore)
@@ -295,19 +295,19 @@ def processCardSelection(value):
             with DBcm.UseDatabase(creds) as db:
                 db.execute(sql, score)
 
-        
+
 
         return redirect("/gameOver")
 
     drawn = drawn.lower().replace(" ", "_") + ".png"
     card_images = [card.lower().replace(" ", "_") + ".png" for card in session['player']]
 
-    
+
     card = random.choice(session['computer'])
     session['computerRequest'] = card
     the_value = card[: card.find(" ")]
     chosen = the_value.lower() + "_request.png"
-    
+
     out = render_template(
         "pickCard.html",
         title = "The Computer wants to Know",
@@ -330,11 +330,11 @@ def liarPage():
     drawn = "none.png"
     card_images = [card.lower().replace(" ", "_") + ".png" for card in session['player']]
 
-    
+
     card = session['computerRequest']
     the_value = card[: card.find(" ")]
     chosen = the_value.lower() + "_request.png"
-    
+
 
     return render_template(
         "pickCard.html",
@@ -355,11 +355,11 @@ def liarReturn():
     drawn = "none.png"
     card_images = [card.lower().replace(" ", "_") + ".png" for card in session['player']]
 
-    
+
     card = session['computerRequest']
     the_value = card[: card.find(" ")]
     chosen = the_value.lower() + "_request.png"
-    
+
 
     return render_template(
         "resolvePick.html",
@@ -402,7 +402,7 @@ def processCardHandOver(value):
     if len(session['player']) == 0 or len(session['computer']) == 0 or len(session['deck']) == 0:
         ## submit your score here!
         if len(session['player_pairs']) > len(session['computer_pairs']):
-            sql = f"insert into scores (player_id, score) values (%S, %S)"
+            sql = f"insert into scores (player_id, score) values (?, ?)"
             newID = session['id']
             newScore = session['score']
             score = (newID, newScore)
@@ -410,18 +410,18 @@ def processCardHandOver(value):
             with DBcm.UseDatabase(creds) as db:
                 db.execute(sql, score)
         elif len(session['player_pairs']) < len(session['computer_pairs']):
-            sql = f"insert into scores (player_id, score) values (%S, %S)"
+            sql = f"insert into scores (player_id, score) values (?, ?)"
             newID = 1
             newScore = session['COMPUTERscore']
             score = (newID, newScore)
 
             with DBcm.UseDatabase(creds) as db:
                 db.execute(sql, score)
-    
+
         return redirect("/gameOver")
 
     card_images = [card.lower().replace(" ", "_") + ".png" for card in session['player']]
-    
+
     return render_template(
         "resolveN.html",
         title = "Keep Playing!",
@@ -485,4 +485,5 @@ def resetGame():
     session['computer'], pairs = cards.identify_remove_pairs(session['computer'])
     session['computer_pairs'].extend(pairs)
 
-app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)
